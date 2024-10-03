@@ -12,7 +12,7 @@ consonant_words = [
     'zebrafish'
 ]
 vowel_words = ['aviso', 'eel', 'iceberg', 'octopus', 'upbound']
-template = 'Ahoy, Captain, {} {} off the larboard bow!'
+template = 'Ahoy, Captain, {} {} off the {} bow!'
 
 
 # --------------------------------------------------
@@ -32,13 +32,14 @@ def test_usage():
         assert out.lower().startswith('usage')
 
 
+
 # --------------------------------------------------
 def test_consonant():
     """brigantine -> a brigantine"""
 
     for word in consonant_words:
         out = getoutput(f'{prg} {word}')
-        assert out.strip() == template.format('a', word)
+        assert out.strip() == template.format('a', word, 'larboard')
 
 
 # --------------------------------------------------
@@ -47,7 +48,7 @@ def test_consonant_upper():
 
     for word in consonant_words:
         out = getoutput(f'{prg} {word.title()}')
-        assert out.strip() == template.format('a', word.title())
+        assert out.strip() == template.format('a', word.title(), 'larboard')
 
 
 # --------------------------------------------------
@@ -56,7 +57,7 @@ def test_vowel():
 
     for word in vowel_words:
         out = getoutput(f'{prg} {word}')
-        assert out.strip() == template.format('an', word)
+        assert out.strip() == template.format('an', word, 'larboard')
 
 
 # --------------------------------------------------
@@ -65,4 +66,40 @@ def test_vowel_upper():
 
     for word in vowel_words:
         out = getoutput(f'{prg} {word.upper()}')
-        assert out.strip() == template.format('an', word.upper())
+        assert out.strip() == template.format('an', word.upper(), 'larboard')
+
+
+# --------------------------------------------------
+def test_consonant_starboard():
+    """brigantine -> a brigantine Starboard!"""
+
+    for word in consonant_words:
+        out = getoutput(f'{prg} {word} --starboard')
+        assert out.strip() == template.format('a', word, 'starboard')
+
+
+# --------------------------------------------------
+def test_consonant_upper_starboard():
+    """brigantine -> a Brigatine Starboard!"""
+
+    for word in consonant_words:
+        out = getoutput(f'{prg} {word.title()} --starboard')
+        assert out.strip() == template.format('a', word.title(), 'starboard')
+
+
+# --------------------------------------------------
+def test_vowel_starboard():
+    """octopus -> an octopus Starboard!"""
+
+    for word in vowel_words:
+        out = getoutput(f'{prg} {word} --starboard')
+        assert out.strip() == template.format('an', word, 'starboard')
+
+
+# --------------------------------------------------
+def test_vowel_upper_starboard():
+    """octopus -> an Octopus Starboard!"""
+
+    for word in vowel_words:
+        out = getoutput(f'{prg} {word.upper()} --starboard')
+        assert out.strip() == template.format('an', word.upper(), 'starboard')
